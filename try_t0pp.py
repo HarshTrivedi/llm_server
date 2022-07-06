@@ -6,12 +6,15 @@ def main():
     # https://huggingface.co/bigscience/T0pp
     # https://github.com/huggingface/transformers/releases/tag/v4.20.0
     # Notes: try without torch_dtype=torch.float16
+    # Explicitly said to prefer bfloat16 or float32.
+
+    # Download and save protoc lib from https://github.com/protocolbuffers/protobuf/releases
 
     model_name = "bigscience/T0pp"
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSeq2SeqLM.from_pretrained(
-        model_name, revision="sharded", device_map="auto", torch_dtype=torch.float16
+        model_name, revision="sharded", device_map="auto", # torch_dtype=torch.bfloat16
     )
 
     inputs = tokenizer.encode(

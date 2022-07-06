@@ -7,7 +7,7 @@ def main():
     # Notes: try without torch_dtype=torch.float16
 
     # facebook/opt-2.7b, facebook/opt-6.7b, facebook/opt-13b, facebook/opt-30b, facebook/opt-66b
-    model_name = "facebook/opt-30b"
+    model_name = "facebook/opt-66b"
 
     model = AutoModelForCausalLM.from_pretrained(
         model_name, revision="main", device_map="auto", torch_dtype=torch.float16

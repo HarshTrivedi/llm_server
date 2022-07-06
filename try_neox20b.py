@@ -1,4 +1,4 @@
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 
 def main():
@@ -9,8 +9,8 @@ def main():
     model_name = "EleutherAI/gpt-neox-20b"
 
     tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(
-        model_name, revision="main", device_map="auto", torch_dtype=torch.float16
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name, revision="main", device_map="auto", # torch_dtype=torch.float16
     )
 
     inputs = tokenizer.encode(

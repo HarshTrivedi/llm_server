@@ -5,11 +5,12 @@ def main():
     # Sources:
     # https://huggingface.co/EleutherAI/gpt-j-6B
     # Notes: try without torch_dtype=torch.float16
+    # 1 GPU 12 GB was enough.
 
     model_name = "EleutherAI/gpt-j-6B"
 
     model = AutoModelForCausalLM.from_pretrained(
-        model_name, revision="sharded", device_map="auto", torch_dtype=torch.float16
+        model_name, revision="sharded", device_map="auto", # torch_dtype=torch.float16
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
