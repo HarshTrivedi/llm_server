@@ -11,7 +11,7 @@ docker build --build-arg MODEL_NAME=gptj -t <image-name> . --workspace <workspac
 beaker image create <image-name> --name <image-name> --workspace <workspace-name>
 ```
 
-## 2. Run it
+## 2. Run the Server
 
 ```bash
 ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
@@ -22,6 +22,13 @@ beaker session create --image beaker://<beaker-username>/<image-name> --workspac
 # It'll map port 8000 to some random port, mark it. Use that port in your call to the API.
 
 # Use 'beaker session describe' to get the URL
+```
+
+## 3. Use the Server
+
+```bash
+# Use the remapped port given by beaker session. It'll be random everytime.
+python client.py --host <aristo-cirrascale..> --port ...
 ```
 
 ----
