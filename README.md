@@ -23,3 +23,16 @@ beaker session create --image beaker://<beaker-username>/<image-name> --workspac
 
 # Use 'beaker session describe' to get the URL
 ```
+
+----
+
+If you just want to tryout the models directly, install the following in your env:
+
+```
+conda install pytorch cudatoolkit=11.3 -c pytorch
+pip install transformers==4.20.1
+pip install sentencepiece
+pip install accelerate==0.10.0
+```
+
+and run `run_models/<model_name>.py`.
