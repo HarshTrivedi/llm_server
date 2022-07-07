@@ -4,7 +4,10 @@
 
 ```bash
 cd dockerfiles
-docker build -t <image-name> . --workspace <workspace-name>
+
+# available model names: gptj, neox20b, opt, t0pp
+docker build --build-arg MODEL_NAME=gptj -t <image-name> . --workspace <workspace-name>
+
 beaker image create <image-name> --name <image-name> --workspace <workspace-name>
 ```
 
@@ -13,21 +16,7 @@ beaker image create <image-name> --name <image-name> --workspace <workspace-name
 ```bash
 ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
 beaker session create --image beaker://<beaker-username>/<image-name> --workspace <workspace-name> --port 8000
-# It'll map port 8000 to some random port, mark it.
+# It'll map port 8000 to some random port, mark it. Use that port in your call to the API.
 
-uvicorn serve_models.<server_name>:app --reload # server_name could be one of the .py files in serve/ directory.
-```
-
-### 3. Expose it
-
-```bash
-ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
-beaker session exec # assuming you only have one session running
-
-# Download ngrok. Actually this should be done in the dockerfile itself (if ngrok is the way to go)!
-wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-darwin-amd64.zip
-sudo unzip ngrok-v3-stable-darwin-amd64.zip -d /usr/local/bin
-rm ngrok-v3-stable-darwin-amd64.zip
-
-ngrok http 49153
+# Use 'beaker session describe' to get the URL
 ```

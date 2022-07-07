@@ -1,21 +1,22 @@
+ARG MODEL_NAME # options: gptj, neox20b, opt, t0pp.
+
 # https://github.com/allenai/docker-images
 # https://github.com/allenai/docker-images/pkgs/container/cuda/24038895?tag=11.2-ubuntu20.04-v0.0.15
 FROM ghcr.io/allenai/cuda:11.2-ubuntu20.04-v0.0.15
 
-COPY serve_models/ serve_models/
-
 # Install transformers
-RUN conda install pytorch cudatoolkit=11.3 -c pytorch # needed for cuda11.3
-RUN pip install transformers==4.20.1
-RUN pip install accelerate==0.10.0
-RUN pip install sentencepiece
+# RUN conda install pytorch cudatoolkit=11.3 -c pytorch # needed for cuda11.3
+# RUN pip install transformers==4.20.1
+# RUN pip install accelerate==0.10.0
+# RUN pip install sentencepiece
+
 RUN pip install fastapi
 RUN pip install "uvicorn[standard]"
 
-# Either do this:
-RUN uvicorn serve_models.hello_world:app --reload --host 0.0.0.0 --port 8000  # Change model name (hello_world, use ARG)
+ENV MODEL_NAME=${MODEL_NAME}
 
-# Or do this:
+# Make sure to git clone 'github.com/harshTrivedi/llm_server' in home directory of cirrascale servers. 
+# Mounting in home isn't possible in beaker-interactive session.
+# https://github.com/allenai/beaker/issues/2351
 
-# The -l flag makes bash act as a login shell and load /etc/profile, etc.
-# ENTRYPOINT ["bash", "-l"]
+ENTRYPOINT ["uvicorn", "llm_server.serve_models.main:app", "--host", "0.0.0.0", "--port", "8000"]
