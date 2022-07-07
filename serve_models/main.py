@@ -6,15 +6,6 @@ from fastapi import FastAPI, status, Response
 # from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
 
 
-@app.get("/")
-async def index():
-    model_shortname = os.environ["MODEL_NAME"]
-    return {
-        "message": f"Hello! This is a server for {model_shortname}. "
-                   "Go to /generate/ for generation requests."
-    }
-
-
 @lru_cache(maxsize=None)
 def get_model_and_tokenizer():
 
@@ -62,6 +53,13 @@ def get_model_and_tokenizer():
 
 app = FastAPI()
 
+@app.get("/")
+async def index():
+    model_shortname = os.environ["MODEL_NAME"]
+    return {
+        "message": f"Hello! This is a server for {model_shortname}. "
+                   "Go to /generate/ for generation requests."
+    }
 
 @app.get("/generate/")
 async def generate(
