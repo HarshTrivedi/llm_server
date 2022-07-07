@@ -77,8 +77,9 @@ async def generate(
         return_dict_in_generate: bool = False,
     ):
 
-        model, tokenizer = get_model_and_tokenizer()
+        model_shortname = os.environ["MODEL_NAME"]
 
+        model, tokenizer = get_model_and_tokenizer()
         inputs = tokenizer.encode(
             prompt,
             return_tensors="pt",
@@ -98,6 +99,6 @@ async def generate(
         )
 
         generated_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
-        return {"generated_text": generated_text}
+        return {"generated_text": generated_text, "model_name": model_shortname}
 
 # get_model_and_tokenizer() # To force load the model.
