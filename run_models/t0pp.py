@@ -9,6 +9,7 @@ def main():
     # Explicitly said to prefer bfloat16 or float32.
 
     # Download and save protoc lib from https://github.com/protocolbuffers/protobuf/releases
+    # Required 48 GBs.
 
     model_name = "bigscience/T0pp"
 

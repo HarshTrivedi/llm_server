@@ -5,7 +5,7 @@ def main():
     # Sources:
     # https://huggingface.co/EleutherAI/gpt-j-6B
     # Notes: try without torch_dtype=torch.float16
-    # 1 GPU 12 GB was enough.
+    # Required 26 GBs.
 
     model_name = "EleutherAI/gpt-j-6B"
 
