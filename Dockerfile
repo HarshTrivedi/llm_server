@@ -2,6 +2,8 @@
 # https://github.com/allenai/docker-images/pkgs/container/cuda/24038895?tag=11.2-ubuntu20.04-v0.0.15
 FROM ghcr.io/allenai/cuda:11.2-ubuntu20.04-v0.0.15
 
+RUN apt-get update && apt-get install -y protobuf-compiler
+
 # Install transformers
 RUN conda install pytorch cudatoolkit=11.3 -c pytorch # needed for cuda11.3
 RUN pip install transformers==4.20.1
