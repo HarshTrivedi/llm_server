@@ -3,7 +3,7 @@ from typing import Union
 from functools import lru_cache
 
 from fastapi import FastAPI, status, Response
-# from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
 
 
 @lru_cache(maxsize=None)
@@ -76,7 +76,6 @@ async def generate(
     ):
 
         model_shortname = os.environ["MODEL_NAME"]
-        return {"model_name": model_shortname} # Temporary
 
         model, tokenizer = get_model_and_tokenizer()
         inputs = tokenizer.encode(
@@ -100,4 +99,4 @@ async def generate(
         generated_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return {"generated_text": generated_text, "model_name": model_shortname}
 
-# get_model_and_tokenizer() # To force load the model.
+get_model_and_tokenizer() # To force load the model.

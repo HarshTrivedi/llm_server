@@ -28,7 +28,8 @@ beaker secret write MODEL_NAME gptj --workspace ai2/GPT3_Exps
 beaker session create \
     --image beaker://<beaker-username>/llm-server-v1 \
     --workspace ai2/GPT3_Exps --port 8000 \
-    --secret-env MODEL_NAME=MODEL_NAME
+    --secret-env MODEL_NAME=MODEL_NAME \
+    --gpus 2
 
 # In a different terminal, ssh into the server again
 ssh <username>@aristo-cirrascale-<...>
