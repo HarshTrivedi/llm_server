@@ -6,7 +6,8 @@ Steps to start the LLM server in beaker-interactive sessions.
 
 ```bash
 # It's a common image for all the models. Increment image version as necessary.
-docker build --build-arg -t llm-server-v1 . --workspace ai2/GPT3_Exps
+# Note that unless the dockerfile changes, there's no need to update image.
+docker build -t llm-server-v1 .
 
 beaker image create llm-server-v1 --name llm-server-v1 --workspace ai2/GPT3_Exps
 ```
@@ -21,11 +22,12 @@ git clone https://github.com/HarshTrivedi/llm_server
 
 # The only way to pass env variable to beaker session is via secrets.
 # Pass the MODEL_NAME you want to run. Available model names: gptj, neox20b, opt, t0pp
-beaker secret write secret-name MODEL_NAME=gptj --workspace ai2/GPT3_Exps
+beaker secret write MODEL_NAME gptj --workspace ai2/GPT3_Exps
 
+# Update the beaker-username and maybe llm-server version number as necessary, and run:
 beaker session create \
-    --image beaker://<beaker-username>/<image-name> \
-    --workspace <workspace-name> --port 8000 \
+    --image beaker://<beaker-username>/llm-server-v1 \
+    --workspace ai2/GPT3_Exps --port 8000 \
     --secret-env MODEL_NAME=MODEL_NAME
 
 # In a different terminal, ssh into the server again
@@ -33,6 +35,7 @@ ssh <username>@aristo-cirrascale-<...>
 # , and run
 beaker session describe
 # It'll show you the HOST and PORT the server is reachable on.
+# Go to that url and it should show you the hello message from the right model.
 ```
 
 ## 3. Use the Server
