@@ -5,7 +5,7 @@ def main():
 
     # This is just an example. Change as necessary.
     host = "http://aristo-cirrascale-13.reviz.ai2.in"
-    port = 49170
+    port = 49171
 
     params = {"prompt": "Hello, I am unconscious and"} # see other arguments in serve_models/main:generate
     response = requests.get(host + ":" + str(port) + "/generate", params=params)
