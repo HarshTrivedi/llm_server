@@ -7,7 +7,7 @@ def main():
     host = "http://aristo-cirrascale-13.reviz.ai2.in"
     port = 49170
 
-    params = {"prompt": "Hello, I am conscious and"} # see other arguments in serve_models/main:generate
+    params = {"prompt": "Hello, I am unconscious and"} # see other arguments in serve_models/main:generate
     response = requests.get(host + ":" + str(port) + "/generate", params=params)
     result = response.json()
 

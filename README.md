@@ -41,6 +41,8 @@ beaker session describe
 ## 3. Use the Server
 
 ```bash
+# pip install requests # if not already in your env.
+
 # Use the remapped port given by beaker session. It'll be random everytime.
 python client.py --host HOST_FROM_ABOVE --port HOST_FROM_ABOVE
 ```
