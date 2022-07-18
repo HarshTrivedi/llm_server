@@ -8,6 +8,7 @@ from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokeni
 
 @lru_cache(maxsize=None)
 def get_model_and_tokenizer():
+    import torch
 
     model_shortname = os.environ["MODEL_NAME"]
 
@@ -99,4 +100,4 @@ async def generate(
         generated_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return {"generated_text": generated_text, "model_name": model_shortname}
 
-get_model_and_tokenizer() # To force load the model.
+# get_model_and_tokenizer() # To force load the model.
