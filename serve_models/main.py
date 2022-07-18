@@ -85,7 +85,6 @@ async def generate(
         )
         generated_ids = model.generate(
             inputs,
-            max_input=max_input,
             max_length=max_length,
             min_length=min_length,
             do_sample=do_sample,
