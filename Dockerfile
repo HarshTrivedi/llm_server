@@ -20,7 +20,7 @@ RUN pip install "uvicorn[standard]"
 COPY serve_models /run/serve_models/
 
 # To run the server directly:
-# ENTRYPOINT ["uvicorn", "serve_models.main:app", "--host", "0.0.0.0", "--port", "8000", "--app-dir", "/run/"]
+ENTRYPOINT ["uvicorn", "serve_models.main:app", "--host", "0.0.0.0", "--port", "8000", "--app-dir", "/run/"]
 
 # To run bash:
-ENTRYPOINT ["bash", "-l"]
+# ENTRYPOINT ["bash", "-l"]
