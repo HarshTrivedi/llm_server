@@ -1,6 +1,7 @@
 import os
 import torch
 from importlib import reload
+import transformers
 
 def main():
 
