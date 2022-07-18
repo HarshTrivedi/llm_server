@@ -4,10 +4,13 @@ import transformers
 
 def main():
 
+    # Run this on one of the aristo machines. The nfs is accessible from
+    # all the machines, so the models only needs to be downloaded once.
+    cache_directory = "/net/nfs.cirrascale/aristo/llm_server/.hf_cache"
+
     # Download gpt-j-6B
     organization = "EleutherAI"
     short_model_name = "gpt-j-6B"
-    cache_directory = os.path.join("hf_models_cache", short_model_name)
     model_name = os.path.join(organization, short_model_name)
     print(f"Downloading and caching {short_model_name}")
     transformers.AutoModelForCausalLM.from_pretrained(
@@ -20,7 +23,6 @@ def main():
     # Download gpt-neox-20b
     organization = "EleutherAI"
     short_model_name = "gpt-neox-20b"
-    cache_directory = os.path.join("hf_models_cache", short_model_name)
     model_name = os.path.join(organization, short_model_name)
     print(f"Downloading and caching {short_model_name}")
     transformers.AutoModelForCausalLM.from_pretrained(
@@ -33,7 +35,6 @@ def main():
     # Download T0pp
     organization = "bigscience"
     short_model_name = "T0pp"
-    cache_directory = os.path.join("hf_models_cache", short_model_name)
     model_name = os.path.join(organization, short_model_name)
     print(f"Downloading and caching {short_model_name}")
     transformers.AutoModelForSeq2SeqLM.from_pretrained(
@@ -46,7 +47,6 @@ def main():
     # Download opt-66b
     organization = "facebook"
     short_model_name = "opt-66b"
-    cache_directory = os.path.join("hf_models_cache", short_model_name)
     model_name = os.path.join(organization, short_model_name)
     print(f"Downloading and caching {short_model_name}")
     transformers.AutoModelForCausalLM.from_pretrained(
