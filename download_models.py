@@ -33,6 +33,8 @@ def main():
     # Download T0pp
     organization = "bigscience"
     short_model_name = "T0pp"
+    cache_directory = os.path.join("hf_models_cache", short_model_name)
+    model_name = os.path.join(organization, short_model_name)
     print(f"Downloading and caching {short_model_name}")
     transformers.AutoModelForSeq2SeqLM.from_pretrained(
         model_name, revision="sharded", cache_dir=cache_directory
