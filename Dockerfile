@@ -8,8 +8,7 @@ RUN apt-get update \
       protobuf-compiler
 
 # Install transformers
-# RUN conda install pytorch cudatoolkit=11.3 -c pytorch # needed for cuda11.3
-RUN pip install torch==1.12.0 # default is cuda10.3, but it loads faster in the interactive session than above.
+RUN conda install pytorch cudatoolkit=11.3 -c pytorch # needed for cuda11.3
 RUN pip install transformers==4.20.1
 RUN pip install accelerate==0.10.0
 RUN pip install sentencepiece
