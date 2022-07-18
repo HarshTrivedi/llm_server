@@ -98,6 +98,6 @@ async def generate(
         generated_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return {"generated_text": generated_text, "model_name": model_shortname}
 
-print("\n\nLoading model and tokenizer.\n")
+print("\nLoading model and tokenizer.")
 get_model_and_tokenizer()
-print("\n\nLoaded model and tokenizer.\n")
+print("Loaded model and tokenizer.\n")
