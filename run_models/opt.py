@@ -1,3 +1,7 @@
+import os
+from constants import TRANSFORMERS_CACHE
+os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
 

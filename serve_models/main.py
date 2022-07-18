@@ -4,6 +4,10 @@ from functools import lru_cache
 
 from fastapi import FastAPI, status, Response
 
+from constants import TRANSFORMERS_CACHE
+os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE
+
+
 @lru_cache(maxsize=None)
 def get_model_and_tokenizer():
     import torch
