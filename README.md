@@ -7,9 +7,9 @@ Steps to start the LLM server in beaker-interactive sessions.
 ```bash
 # It's a common image for all the models. Increment image version as necessary.
 # Note that unless the dockerfile changes, there's no need to update image.
-docker build -t llm-server-v1 .
+docker build -t llm-server .
 
-beaker image create llm-server-v1 --name llm-server-v1 --workspace ai2/GPT3_Exps
+beaker image create llm-server --name llm-server --workspace ai2/GPT3_Exps
 ```
 
 ## 2. Run the Server
@@ -17,16 +17,13 @@ beaker image create llm-server-v1 --name llm-server-v1 --workspace ai2/GPT3_Exps
 ```bash
 ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
 
-# The llm_server has to be in your home dir. If it's already there don't clone it.
-git clone https://github.com/HarshTrivedi/llm_server
-
 # The only way to pass env variable to beaker session is via secrets.
-# Pass the MODEL_NAME you want to run. Available model names: gptj, neox20b, opt, t0pp
-beaker secret write MODEL_NAME gptj --workspace ai2/GPT3_Exps
+# Pass the MODEL_NAME you want to run. Available model names: ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
+beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
 beaker session create \
-    --image beaker://<beaker-username>/llm-server-v1 \
+    --image beaker://<beaker-username>/llm-server \
     --workspace ai2/GPT3_Exps --port 8000 \
     --secret-env MODEL_NAME=MODEL_NAME \
     --gpus 2
@@ -60,3 +57,10 @@ pip install accelerate==0.10.0
 ```
 
 and run `run_models/<model_name>.py`.
+
+
+If you want to run the server locally, also install:
+```
+pip install fastapi
+pip install "uvicorn[standard]"
+```

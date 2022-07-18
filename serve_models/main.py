@@ -11,11 +11,11 @@ def get_model_and_tokenizer():
 
     model_shortname = os.environ["MODEL_NAME"]
 
-    valid_model_shortnames = ["gptj", "opt", "neox20b", "t0pp"]
+    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
 
-    if model_shortname == "gptj":
+    if model_shortname == "gpt-j-6B":
 
         model_name = "EleutherAI/gpt-j-6B"
         model = AutoModelForCausalLM.from_pretrained(
@@ -23,7 +23,7 @@ def get_model_and_tokenizer():
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    elif model_shortname == "opt":
+    elif model_shortname == "opt-66b":
 
         model_name = "facebook/opt-66b"
         model = AutoModelForCausalLM.from_pretrained(
@@ -32,7 +32,7 @@ def get_model_and_tokenizer():
         # the fast tokenizer currently does not work correctly
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
-    elif model_shortname == "neox20b":
+    elif model_shortname == "gpt-neox-20b":
 
         model_name = "EleutherAI/gpt-neox-20b"
         model = AutoModelForCausalLM.from_pretrained(
@@ -40,7 +40,7 @@ def get_model_and_tokenizer():
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    elif model_shortname == "t0pp":
+    elif model_shortname == "T0pp":
 
         model_name = "bigscience/T0pp"
         model = AutoModelForSeq2SeqLM.from_pretrained(
@@ -98,3 +98,7 @@ async def generate(
 
         generated_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
         return {"generated_text": generated_text, "model_name": model_shortname}
+
+print("\n\nLoading model and tokenizer.\n")
+get_model_and_tokenizer()
+print("\n\nLoaded model and tokenizer.\n")
