@@ -69,8 +69,8 @@ async def index():
 async def generate(
         prompt: str,
         max_input: int = None,
-        max_length: int = 20,
-        min_length: int = 10,
+        max_length: int = 200,
+        min_length: int = 1,
         do_sample: bool = False,
         temperature: float = 1.0,
         top_k: int = 50,
@@ -90,7 +90,7 @@ async def generate(
         )
         generated_output = model.generate(
             inputs,
-            max_length=max_length,
+            max_length=inputs.shape[1]+max_length, # HF's max_length includes the input.
             min_length=min_length,
             do_sample=do_sample,
             temperature=temperature,
