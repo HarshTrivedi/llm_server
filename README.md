@@ -29,7 +29,7 @@ beaker image create llm-server --name llm-server --workspace ai2/GPT3_Exps
 ```bash
 ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
 
-# This needs to be done once in one of the aristo cirrascale servers.
+# This needs to be done once in one of the cirrascale servers.
 # It'll download models in nfs: /net/nfs.cirrascale/aristo/llm-server/.hf_cache
 python download_models.py
 
@@ -39,11 +39,13 @@ python download_models.py
 beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
+# For opt-66b, use 8 GPUS. For all other use 2 GPUs and 100Gs.
 beaker session create \
     --image beaker://<beaker-username>/llm-server \
     --workspace ai2/GPT3_Exps --port 8000 \
     --secret-env MODEL_NAME=MODEL_NAME \
-    --gpus 2
+    --gpus 2 \
+    --memory 100GiB
 
 # In a different terminal, ssh into the server again
 ssh <username>@aristo-cirrascale-<...>
