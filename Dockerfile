@@ -18,6 +18,7 @@ RUN pip install fastapi
 RUN pip install "uvicorn[standard]"
 
 COPY serve_models /run/serve_models/
+COPY constants.py /run/constants.py
 
 # To run the server directly:
 ENTRYPOINT ["uvicorn", "serve_models.main:app", "--host", "0.0.0.0", "--port", "8000", "--app-dir", "/run/"]
