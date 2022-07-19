@@ -34,7 +34,8 @@ ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
 python download_models.py
 
 # The only way to pass env variable to beaker session is via secrets.
-# Pass the MODEL_NAME you want to run. Available model names: ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
+# Pass the MODEL_NAME you want to run. Available model names:
+# ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
 beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
