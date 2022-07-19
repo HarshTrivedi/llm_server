@@ -33,9 +33,16 @@ ssh <username>@aristo-cirrascale-13.reviz.ai2.in # ssh into one of the cirrascal
 # It'll download models in nfs: /net/nfs.cirrascale/aristo/llm-server/.hf_cache
 python download_models.py
 
+# Available model names: ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
+
+# OPTION 1: #
+#############
+./start_server.sh gpt-j-6B
+
+# OPTION 2: #
+#############
 # The only way to pass env variable to beaker session is via secrets.
-# Pass the MODEL_NAME you want to run. Available model names:
-# ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
+# Pass the MODEL_NAME you want to run.
 beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
