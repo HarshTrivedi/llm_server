@@ -87,7 +87,7 @@ async def generate(
             prompt,
             return_tensors="pt",
             max_length=max_input
-        )
+        ).cuda()
         generated_output = model.generate(
             inputs,
             max_length=inputs.shape[1]+max_length, # HF's max_length includes the input.

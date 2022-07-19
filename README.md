@@ -39,7 +39,7 @@ python download_models.py
 beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
-# For opt-66b, use 8 GPUS. For all other use 2 GPUs and 100Gs.
+# For opt-66b, use 4 GPUS. For all other use 2 GPUs and 100Gs.
 beaker session create \
     --image beaker://<beaker-username>/llm-server \
     --workspace ai2/GPT3_Exps --port 8000 \
