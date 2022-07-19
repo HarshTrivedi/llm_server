@@ -76,7 +76,8 @@ async def generate(
         top_k: int = 50,
         top_p: float = 1.0,
         num_return_sequences: int = 1,
-        return_dict_in_generate: bool = False,
+        repetition_penalty: float = None,
+        length_penalty: float = None,
     ):
 
         model_shortname = os.environ["MODEL_NAME"]
@@ -87,7 +88,7 @@ async def generate(
             return_tensors="pt",
             max_length=max_input
         )
-        generated_ids = model.generate(
+        generated_output = model.generate(
             inputs,
             max_length=max_length,
             min_length=min_length,
@@ -96,11 +97,14 @@ async def generate(
             top_k=top_k,
             top_p=top_p,
             num_return_sequences=num_return_sequences,
-            return_dict_in_generate=return_dict_in_generate,
+            return_dict_in_generate=True,
+            repetition_penalty=repetition_penalty,
+            length_penalty=length_penalty,
+            output_scores=False, # make it configurable later. It turns in generated_output["scores"]
         )
-
-        generated_text = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
-        return {"generated_text": generated_text, "model_name": model_shortname}
+        generated_ids = generated_output["sequences"]
+        generated_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+        return {"generated_texts": generated_texts, "model_name": model_shortname}
 
 print("\nLoading model and tokenizer.")
 get_model_and_tokenizer()
