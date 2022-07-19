@@ -46,5 +46,6 @@ elif [ "$1" = "opt-66b" ]; then # 66B
 
 else
     echo "Usage: ./start_server.sh <model-name>. Model-name not passed or is invalid."
+    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b"
 
 fi

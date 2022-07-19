@@ -37,6 +37,7 @@ python download_models.py
 
 # OPTION 1: #
 #############
+wget -O start_server.sh https://raw.githubusercontent.com/HarshTrivedi/llm_server/main/start_server.sh # if not available already.
 ./start_server.sh gpt-j-6B
 
 # OPTION 2: #
