@@ -27,7 +27,7 @@ beaker image create llm-server --name llm-server --workspace ai2/GPT3_Exps
 ## 3. Run the Server
 
 ```bash
-ssh <username>@aristo-cirrascale-<...> # Check from beaker onperm clusters
+ssh <username>@aristo-cirrascale-13.reviz.ai2.in # ssh into one of the cirrascale servers
 
 # This needs to be done once in one of the cirrascale servers.
 # It'll download models in nfs: /net/nfs.cirrascale/aristo/llm-server/.hf_cache
@@ -47,12 +47,9 @@ beaker session create \
     --gpus 2 \
     --memory 100GiB
 
-# In a different terminal, ssh into the server again
-ssh <username>@aristo-cirrascale-<...>
-# , and run
-beaker session describe
-# It'll show you the HOST and PORT the server is reachable on.
-# Go to that url and it should show you the hello message from the right model.
+# Mark the exposed port the server is running on. E.g. "Exposed Ports: 0.0.0.0:49198->8000/tcp"
+# The host is the server you logged in, e.g., aristo-cirrascale-13.reviz.ai2.in
+# You can access it now at host:port . E.g., http://aristo-cirrascale-13.reviz.ai2.in:49198
 ```
 
 ## 4. Use the Server
