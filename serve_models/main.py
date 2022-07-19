@@ -31,8 +31,8 @@ def get_model_and_tokenizer():
 
         model_name = "facebook/opt-66b"
         model = AutoModelForCausalLM.from_pretrained(
-            model_name, revision="main", device_map="auto", torch_dtype=torch.float16
-        ).cuda()
+            model_name, revision="main", device_map="auto"
+        )
         # the fast tokenizer currently does not work correctly
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
