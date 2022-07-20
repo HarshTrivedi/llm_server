@@ -1,5 +1,5 @@
 import os
-from typing import Union
+from typing import Union, List
 from functools import lru_cache
 
 from fastapi import FastAPI, status, Response
