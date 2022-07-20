@@ -17,7 +17,7 @@ def get_model_and_tokenizer():
 
     model_shortname = os.environ["MODEL_NAME"]
 
-    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
+    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m"]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
 
@@ -53,6 +53,15 @@ def get_model_and_tokenizer():
             model_name, revision="sharded", device_map="auto", # torch_dtype=torch.bfloat16
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    elif model_shortname == "opt-125m"
+
+        model_name = "facebook/opt-125m"
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name, revision="main", device_map="auto"
+        )
+        # the fast tokenizer currently does not work correctly
+        tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
     return model, tokenizer
 
