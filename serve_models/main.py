@@ -5,13 +5,15 @@ from functools import lru_cache
 from fastapi import FastAPI, status, Response
 
 from constants import TRANSFORMERS_CACHE
-os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE
+os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE # before importing transformers
+
+import torch
+from transformers.generation_stopping_criteria import StoppingCriteria, StoppingCriteriaList
+from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
 
 
 @lru_cache(maxsize=None)
 def get_model_and_tokenizer():
-    import torch
-    from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
 
     model_shortname = os.environ["MODEL_NAME"]
 
@@ -55,6 +57,15 @@ def get_model_and_tokenizer():
     return model, tokenizer
 
 
+class EOSReachedCriteria(StoppingCriteria):
+    # Use this when EOS is not a single id, but a sequence of ids, e.g. for a custom EOS text.
+    def __init__(self, eos_ids: List[int]):
+        self.eos_ids = eos_ids
+
+    def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
+        return input_ids[-len(self.eos_ids):].tolist() == self.eos_ids
+
+
 app = FastAPI()
 
 @app.get("/")
@@ -78,6 +89,7 @@ async def generate(
         num_return_sequences: int = 1,
         repetition_penalty: float = None,
         length_penalty: float = None,
+        eos_text: str = None
     ):
 
         model_shortname = os.environ["MODEL_NAME"]
@@ -88,6 +100,12 @@ async def generate(
             return_tensors="pt",
             max_length=max_input
         ).cuda()
+
+        stopping_criteria_list = StoppingCriteriaList()
+        if eos_text:
+            eos_ids = tokenizer.encode(eos_text.strip())
+            stopping_criteria_list = StoppingCriteriaList([EOSReachedCriteria(eos_ids=eos_ids)])
+
         generated_output = model.generate(
             inputs,
             max_length=inputs.shape[1]+max_length, # HF's max_length includes the input.
@@ -100,6 +118,7 @@ async def generate(
             return_dict_in_generate=True,
             repetition_penalty=repetition_penalty,
             length_penalty=length_penalty,
+            stopping_criteria_list=stopping_criteria_list,
             output_scores=False, # make it configurable later. It turns in generated_output["scores"]
         )
         generated_ids = generated_output["sequences"]
