@@ -75,7 +75,8 @@ class EOSReachedCriteria(StoppingCriteria):
             "EOS text can't be longer then 10 tokens. It makes stopping_criteria check slow."
 
     def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
-        return self.tokenizer.decode(input_ids[0][-10:]).strip().endswith(self.eos_text.strip())
+        # Don't strip eos_text as we may want to use \n as eos.
+        return self.tokenizer.decode(input_ids[0][-10:]).endswith(self.eos_text)
 
 
 app = FastAPI()
