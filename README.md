@@ -30,7 +30,7 @@ beaker image create llm-server --name llm-server --workspace ai2/GPT3_Exps
 ssh <username>@aristo-cirrascale-13.reviz.ai2.in # ssh into one of the cirrascale servers
 
 # This needs to be done once in one of the cirrascale servers.
-# It'll download models in nfs: /net/nfs.cirrascale/aristo/llm-server/.hf_cache
+# It'll download models in nfs: /net/nfs.cirrascale/aristo/llm_server/.hf_cache
 python download_models.py
 
 # Available model names: ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
@@ -46,7 +46,10 @@ wget -O start_server.sh https://raw.githubusercontent.com/HarshTrivedi/llm_serve
 # Pass the MODEL_NAME you want to run.
 beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
-# Update the beaker-username and maybe llm-server version number as necessary, and run:
+# Update the beaker-username and maybe 
+
+
+erver version number as necessary, and run:
 # For opt-66b, use 4 GPUS. For all other use 2 GPUs and 100Gs.
 beaker session create \
     --image beaker://<beaker-username>/llm-server \
