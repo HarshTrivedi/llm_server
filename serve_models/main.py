@@ -105,7 +105,7 @@ async def generate(
         repetition_penalty: float = None,
         length_penalty: float = None,
         eos_text: str = None,
-        keep_prompt: str = False,
+        keep_prompt: bool = False,
     ):
 
         model_shortname = os.environ["MODEL_NAME"]
