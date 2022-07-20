@@ -146,7 +146,7 @@ async def generate(
                 generated_text[generated_text.index(prompt)+len(prompt):]
                 for generated_text in generated_texts
             ]
-        elif keep_prompt and model_name in ["T0pp"]
+        elif keep_prompt and model_name in ["T0pp"]:
             generated_texts = [prompt + generated_text for generated_text in generated_texts]
 
         return {"generated_texts": generated_texts, "model_name": model_shortname}
