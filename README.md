@@ -46,10 +46,7 @@ wget -O start_server.sh https://raw.githubusercontent.com/HarshTrivedi/llm_serve
 # Pass the MODEL_NAME you want to run.
 beaker secret write MODEL_NAME gpt-j-6B --workspace ai2/GPT3_Exps
 
-# Update the beaker-username and maybe 
-
-
-erver version number as necessary, and run:
+# Update the beaker-username and maybe llm-server version number as necessary, and run:
 # For opt-66b, use 4 GPUS. For all other use 2 GPUs and 100Gs.
 beaker session create \
     --image beaker://<beaker-username>/llm-server \
