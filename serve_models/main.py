@@ -101,7 +101,8 @@ async def generate(
         num_return_sequences: int = 1,
         repetition_penalty: float = None,
         length_penalty: float = None,
-        eos_text: str = None
+        eos_text: str = None,
+        keep_prompt: str = False,
     ):
 
         model_shortname = os.environ["MODEL_NAME"]
@@ -135,6 +136,13 @@ async def generate(
         )
         generated_ids = generated_output["sequences"]
         generated_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
+
+        if not keep_prompt:
+            generated_texts = [
+                generated_text[generated_text.index(prompt)+len(prompt):]
+                for generated_text in generated_texts
+            ]
+
         return {"generated_texts": generated_texts, "model_name": model_shortname}
 
 print("\nLoading model and tokenizer.")
