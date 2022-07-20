@@ -54,7 +54,7 @@ def get_model_and_tokenizer():
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    elif model_shortname == "opt-125m"
+    elif model_shortname == "opt-125m":
 
         model_name = "facebook/opt-125m"
         model = AutoModelForCausalLM.from_pretrained(
