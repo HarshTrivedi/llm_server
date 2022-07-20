@@ -68,11 +68,14 @@ def get_model_and_tokenizer():
 
 class EOSReachedCriteria(StoppingCriteria):
     # Use this when EOS is not a single id, but a sequence of ids, e.g. for a custom EOS text.
-    def __init__(self, eos_ids: List[int]):
-        self.eos_ids = eos_ids
+    def __init__(self, tokenizer: AutoTokenizer, eos_text: str):
+        self.tokenizer = tokenizer
+        self.eos_text = eos_text
+        assert len(self.tokenizer.encode(eos_text)) < 10, \
+            "EOS text can't be longer then 10 tokens. It makes stopping_criteria check slow."
 
     def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
-        return input_ids[-len(self.eos_ids):].tolist() == self.eos_ids
+        return self.tokenizer.decode(input_ids[0][-10:]).strip().endswith(self.eos_text.strip())
 
 
 app = FastAPI()
@@ -112,8 +115,8 @@ async def generate(
 
         stopping_criteria_list = StoppingCriteriaList()
         if eos_text:
-            eos_ids = tokenizer.encode(eos_text.strip())
-            stopping_criteria_list = StoppingCriteriaList([EOSReachedCriteria(eos_ids=eos_ids)])
+            stopping_criteria = EOSReachedCriteria(tokenizer=tokenizer, eos_text=eos_text)
+            stopping_criteria_list = StoppingCriteriaList([stopping_criteria])
 
         generated_output = model.generate(
             inputs,
@@ -127,7 +130,7 @@ async def generate(
             return_dict_in_generate=True,
             repetition_penalty=repetition_penalty,
             length_penalty=length_penalty,
-            stopping_criteria_list=stopping_criteria_list,
+            stopping_criteria=stopping_criteria_list,
             output_scores=False, # make it configurable later. It turns in generated_output["scores"]
         )
         generated_ids = generated_output["sequences"]
