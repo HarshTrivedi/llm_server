@@ -141,12 +141,12 @@ async def generate(
         generated_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
 
         # T0pp is the only encoder-decoder model, and so doesn't have prompt part of its generation.
-        if not keep_prompt and model_name not in ["T0pp"]:
+        if not keep_prompt and model_shortname not in ["T0pp"]:
             generated_texts = [
                 generated_text[generated_text.index(prompt)+len(prompt):]
                 for generated_text in generated_texts
             ]
-        elif keep_prompt and model_name in ["T0pp"]:
+        elif keep_prompt and model_shortname in ["T0pp"]:
             generated_texts = [prompt + generated_text for generated_text in generated_texts]
 
         return {"generated_texts": generated_texts, "model_name": model_shortname}
