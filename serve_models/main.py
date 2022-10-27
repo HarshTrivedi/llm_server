@@ -17,7 +17,7 @@ def get_model_and_tokenizer():
 
     model_shortname = os.environ["MODEL_NAME"]
 
-    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m"]
+    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m", "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl"]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
 
