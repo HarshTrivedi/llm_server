@@ -14,7 +14,7 @@ def main():
     model_name = "google/flan-t5-xxl"
 
     model = AutoModelForSeq2SeqLM.from_pretrained(
-        model_name, revision="main", device_map="auto", # torch_dtype=torch.float16
+        model_name, revision="main", device_map="auto" # torch_dtype=torch.float16
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
