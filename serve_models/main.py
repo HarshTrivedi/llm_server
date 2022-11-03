@@ -83,7 +83,10 @@ class EOSReachedCriteria(StoppingCriteria):
             "EOS text can't be longer then 10 tokens. It makes stopping_criteria check slow."
 
     def __call__(self, input_ids: torch.LongTensor, scores: torch.FloatTensor, **kwargs) -> bool:
-        return self.tokenizer.decode(input_ids[0][-10:]).strip().endswith(self.eos_text.strip())
+        decoded_text = self.tokenizer.decode(input_ids[0][-10:])
+        condition1 = decoded_text.endswith(self.eos_text)
+        condition2 = decoded_text.strip().endswith(self.eos_text.strip())
+        return condition1 or condition2
 
 
 app = FastAPI()
@@ -110,7 +113,7 @@ async def generate(
         repetition_penalty: float = None,
         length_penalty: float = None,
         eos_text: str = None,
-        keep_prompt: str = False,
+        keep_prompt: bool = False,
     ):
 
         model_shortname = os.environ["MODEL_NAME"]
@@ -145,11 +148,14 @@ async def generate(
         generated_ids = generated_output["sequences"]
         generated_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
 
-        if not keep_prompt:
+        # T0pp is the only encoder-decoder model, and so doesn't have prompt part of its generation.
+        if not keep_prompt and model_shortname not in ["T0pp"]:
             generated_texts = [
                 generated_text[generated_text.index(prompt)+len(prompt):]
                 for generated_text in generated_texts
             ]
+        elif keep_prompt and model_shortname in ["T0pp"]:
+            generated_texts = [prompt + generated_text for generated_text in generated_texts]
 
         return {"generated_texts": generated_texts, "model_name": model_shortname}
 
