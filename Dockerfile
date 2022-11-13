@@ -8,7 +8,7 @@ RUN apt-get update \
       protobuf-compiler
 
 # Install transformers
-RUN conda install pytorch cudatoolkit=11.3 -c pytorch # needed for cuda11.3
+RUN conda install pytorch=1.12.0 cudatoolkit=11.3 -c pytorch # needed for cuda11.3
 RUN pip install git+https://github.com/huggingface/transformers.git@ccc089780415445768bcfd3ac4418cec20353484
 RUN pip install accelerate==0.10.0
 RUN pip install sentencepiece

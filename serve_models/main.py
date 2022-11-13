@@ -17,7 +17,7 @@ def get_model_and_tokenizer():
 
     model_shortname = os.environ["MODEL_NAME"]
 
-    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m"]
+    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m", "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl"]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
 
@@ -62,6 +62,14 @@ def get_model_and_tokenizer():
         )
         # the fast tokenizer currently does not work correctly
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
+
+    elif model_shortname.startswith("flan-t5"):
+         model_name = "google/" + model_shortname
+
+         model = AutoModelForSeq2SeqLM.from_pretrained(
+            model_name, revision="main", device_map="auto", # torch_dtype=torch.float16
+         )
+         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     return model, tokenizer
 
@@ -140,13 +148,13 @@ async def generate(
         generated_ids = generated_output["sequences"]
         generated_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
 
-        # T0pp is the only encoder-decoder model, and so doesn't have prompt part of its generation.
-        if not keep_prompt and model_shortname not in ["T0pp"]:
+        # T0pp and flan is the only encoder-decoder model, and so doesn't have prompt part of its generation.
+        if not keep_prompt and model_shortname not in ["T0pp"] and not model_shortname.startswith("flan-t5"):
             generated_texts = [
                 generated_text[generated_text.index(prompt)+len(prompt):]
                 for generated_text in generated_texts
             ]
-        elif keep_prompt and model_shortname in ["T0pp"]:
+        elif keep_prompt and (model_shortname in ["T0pp"] or model_shortname.startswith("flan-t5")):
             generated_texts = [prompt + generated_text for generated_text in generated_texts]
 
         return {"generated_texts": generated_texts, "model_name": model_shortname}
