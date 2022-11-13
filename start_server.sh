@@ -53,7 +53,7 @@ elif [ "$1" = "opt-125m" ]; then # <1B Mainly for quick testing.
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 1
 
-elif [ "$1" == *"flan"* ]; then
+elif [[ "$1" == *"flan"* ]]; then
     beaker secret write MODEL_NAME $1 --workspace ai2/GPT3_Exps
     beaker session create \
         --image beaker://harsh-trivedi/llm-server \
