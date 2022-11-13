@@ -33,7 +33,8 @@ ssh <username>@aristo-cirrascale-13.reviz.ai2.in # ssh into one of the cirrascal
 # It'll download models in nfs: /net/nfs.cirrascale/aristo/llm_server/.hf_cache
 python download_models.py
 
-# Available model names: ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp"]
+# Available model names: ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp",
+#                         "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl"]
 
 # OPTION 1: #
 #############
