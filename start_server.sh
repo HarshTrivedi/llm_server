@@ -63,6 +63,6 @@ elif [ "$1" == *"flan"* ]; then
 
 else
     echo "Usage: ./start_server.sh <model-name>. Model-name not passed or is invalid."
-    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125mflan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl."
+    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl."
 
 fi
