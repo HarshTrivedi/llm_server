@@ -2,7 +2,7 @@
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
 # This is what I have tested models with:
-# For opt-66b 4 GPUS and for almost all others 2 GPUs and 100Gs.
+# For opt-66b 4 GPUS and for all others 2 GPUs and 100Gs.
 # However testing was done with short prompts. So update each as necessary.
 
 if [ "$1" = "gpt-j-6B" ]; then # 6B
