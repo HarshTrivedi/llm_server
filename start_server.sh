@@ -2,7 +2,7 @@
 
 # Update the beaker-username and maybe llm-server version number as necessary, and run:
 # This is what I have tested models with:
-# For opt-66b 4 GPUS and for all others 2 GPUs and 100Gs.
+# For opt-66b 4 GPUS and for almost all others 2 GPUs and 100Gs.
 # However testing was done with short prompts. So update each as necessary.
 
 if [ "$1" = "gpt-j-6B" ]; then # 6B
@@ -53,8 +53,16 @@ elif [ "$1" = "opt-125m" ]; then # <1B Mainly for quick testing.
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 1
 
+elif [ "$1" == *"flan"* ]; then
+    beaker secret write MODEL_NAME $1 --workspace ai2/GPT3_Exps
+    beaker session create \
+        --image beaker://harsh-trivedi/llm-server \
+        --workspace ai2/GPT3_Exps --port 8000 \
+        --secret-env MODEL_NAME=MODEL_NAME \
+        --gpus 2
+
 else
     echo "Usage: ./start_server.sh <model-name>. Model-name not passed or is invalid."
-    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m"
+    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125mflan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl."
 
 fi
