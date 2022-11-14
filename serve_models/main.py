@@ -64,12 +64,17 @@ def get_model_and_tokenizer():
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
     elif model_shortname.startswith("flan-t5"):
-         model_name = "google/" + model_shortname
+        model_name = "google/" + model_shortname
 
-         model = AutoModelForSeq2SeqLM.from_pretrained(
-            model_name, revision="main", device_map="auto", # torch_dtype=torch.float16
-         )
-         tokenizer = AutoTokenizer.from_pretrained(model_name)
+        if "xxl" in model_shortname:
+            model = AutoModelForSeq2SeqLM.from_pretrained(
+                model_name, revision="main", device_map="auto", load_in_8bit=True
+            )
+        else:
+            model = AutoModelForSeq2SeqLM.from_pretrained(
+                model_name, revision="main", device_map="auto"
+            )
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     return model, tokenizer
 
