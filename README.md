@@ -10,7 +10,7 @@ conda install pytorch cudatoolkit=11.3 -c pytorch
 pip install transformers==4.20.1
 pip install sentencepiece
 pip install accelerate==0.10.0
-pip install bitsandbytes==0.26.0
+pip install bitsandbytes==0.35.4
 pip install fastapi
 pip install "uvicorn[standard]"
 ```
