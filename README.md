@@ -7,10 +7,10 @@ Steps to start the LLM server in beaker-interactive sessions.
 ```
 conda create -n llm-server python=3.8 -y && conda activate llm-server
 conda install pytorch cudatoolkit=11.3 -c pytorch
-pip install transformers==4.20.1
+pip install transformers==4.24.0
+pip install accelerate==0.14.0
+pip install -i https://test.pypi.org/simple/ bitsandbytes-cuda115
 pip install sentencepiece
-pip install accelerate==0.10.0
-pip install bitsandbytes==0.35.4
 pip install fastapi
 pip install "uvicorn[standard]"
 ```
