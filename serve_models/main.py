@@ -71,7 +71,7 @@ def get_model_and_tokenizer():
 
         if "xxl" in model_shortname:
             model = T5ForConditionalGeneration.from_pretrained(
-                model_name, revision="main", device_map="auto", load_in_8bit=True
+                model_name, revision="main", device_map="auto", torch_dtype=torch.float16
             )
         else:
             model = T5ForConditionalGeneration.from_pretrained(
