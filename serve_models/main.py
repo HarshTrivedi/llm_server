@@ -68,15 +68,9 @@ def get_model_and_tokenizer():
 
     elif model_shortname.startswith("flan-t5"):
         model_name = "google/" + model_shortname
-
-        if "xxl" in model_shortname:
-            model = T5ForConditionalGeneration.from_pretrained(
-                model_name, revision="main", device_map="auto", torch_dtype=torch.float16
-            )
-        else:
-            model = T5ForConditionalGeneration.from_pretrained(
-                model_name, revision="main", device_map="auto"
-            )
+        model = T5ForConditionalGeneration.from_pretrained(
+            model_name, revision="main", device_map="auto"
+        )
         tokenizer = T5Tokenizer.from_pretrained(model_name)
 
     return model, tokenizer
