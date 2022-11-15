@@ -148,7 +148,7 @@ async def generate(
         generated_ids = generated_output["sequences"]
         generated_texts = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)
 
-        num_tokens = [len(generated_ids_) for generated_ids_ in generated_ids]
+        generated_num_tokens = [len(generated_ids_) for generated_ids_ in generated_ids]
 
         # T0pp and flan are the only encoder-decoder model, and so don't have prompt part in its generation.
         is_encoder_decoder = model_shortname in ["T0pp"] or model_shortname.startswith("flan-t5")
@@ -160,7 +160,11 @@ async def generate(
         elif keep_prompt and is_encoder_decoder:
             generated_texts = [prompt + generated_text for generated_text in generated_texts]
 
-        return {"generated_texts": generated_texts, "model_name": model_shortname, "num_tokens": num_tokens}
+        return {
+            "generated_num_tokens": generated_num_tokens,
+            "generated_texts": generated_texts,
+            "model_name": model_shortname
+        }
 
 print("\nLoading model and tokenizer.")
 get_model_and_tokenizer()
