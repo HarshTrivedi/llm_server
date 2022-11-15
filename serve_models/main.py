@@ -9,10 +9,7 @@ os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE # before importing transfo
 
 import torch
 from transformers.generation_stopping_criteria import StoppingCriteria, StoppingCriteriaList
-from transformers import (
-    AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer,
-    T5Tokenizer, T5ForConditionalGeneration
-)
+from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
 
 
 @lru_cache(maxsize=None)
@@ -68,10 +65,11 @@ def get_model_and_tokenizer():
 
     elif model_shortname.startswith("flan-t5"):
         model_name = "google/" + model_shortname
-        model = T5ForConditionalGeneration.from_pretrained(
+        # don't use fp16 or 8bit precision here. It works terribly worse.
+        model = AutoModelForSeq2SeqLM.from_pretrained(
             model_name, revision="main", device_map="auto"
         )
-        tokenizer = T5Tokenizer.from_pretrained(model_name)
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     return model, tokenizer
 
