@@ -61,8 +61,18 @@ elif [[ "$1" == *"flan"* ]]; then
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 1 # 1 is enough for xxl upto 2300 wordpieces.
 
+elif [ "$1" = "ul2" ]; then # 20B
+
+    beaker secret write MODEL_NAME ul2 --workspace ai2/GPT3_Exps
+    beaker session create \
+        --image beaker://harsh-trivedi/llm-server \
+        --workspace ai2/GPT3_Exps --port 8000 \
+        --secret-env MODEL_NAME=MODEL_NAME \
+        --gpus 2 \
+        --memory 100GiB
+
 else
     echo "Usage: ./start_server.sh <model-name>. Model-name not passed or is invalid."
-    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl."
+    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl, ul2."
 
 fi

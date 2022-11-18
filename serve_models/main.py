@@ -17,7 +17,10 @@ def get_model_and_tokenizer():
 
     model_shortname = os.environ["MODEL_NAME"]
 
-    valid_model_shortnames = ["gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m", "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl"]
+    valid_model_shortnames = [
+        "gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m",
+        "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl", "ul2"
+    ]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
 
@@ -70,6 +73,11 @@ def get_model_and_tokenizer():
             model_name, revision="main", device_map="auto"
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    elif model_shortname == "ul2":
+        model_name = "google/" + model_shortname
+        model = AutoModelForSeq2SeqLM.from_pretrained("google/ul2", device_map="auto")
+        tokenizer = AutoTokenizer.from_pretrained("google/ul2")
 
     return model, tokenizer
 
@@ -151,7 +159,7 @@ async def generate(
         generated_num_tokens = [len(generated_ids_) for generated_ids_ in generated_ids]
 
         # T0pp and flan are the only encoder-decoder model, and so don't have prompt part in its generation.
-        is_encoder_decoder = model_shortname in ["T0pp"] or model_shortname.startswith("flan-t5")
+        is_encoder_decoder = model_shortname in ["T0pp", "ul2"] or model_shortname.startswith("flan-t5")
         if not keep_prompt and not is_encoder_decoder:
             generated_texts = [
                 generated_text[generated_text.index(prompt)+len(prompt):]
