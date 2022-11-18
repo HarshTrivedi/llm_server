@@ -159,7 +159,8 @@ async def generate(
         generated_num_tokens = [len(generated_ids_) for generated_ids_ in generated_ids]
 
         # T0pp and flan are the only encoder-decoder model, and so don't have prompt part in its generation.
-        is_encoder_decoder = model_shortname in ["T0pp", "ul2"] or model_shortname.startswith("flan-t5")
+        # ul2 shouldn't be added to this list and it generates input as well.
+        is_encoder_decoder = model_shortname in ["T0pp"] or model_shortname.startswith("flan-t5")
         if not keep_prompt and not is_encoder_decoder:
             generated_texts = [
                 generated_text[generated_text.index(prompt)+len(prompt):]
