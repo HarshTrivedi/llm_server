@@ -1,4 +1,5 @@
 import os
+import time
 from typing import Union, List
 from functools import lru_cache
 
@@ -128,6 +129,7 @@ async def generate(
         eos_text: str = None,
         keep_prompt: bool = False,
     ):
+        start_time = time.time()
 
         model_shortname = os.environ["MODEL_NAME"]
 
@@ -174,10 +176,13 @@ async def generate(
         elif keep_prompt and is_encoder_decoder:
             generated_texts = [prompt + generated_text for generated_text in generated_texts]
 
+        end_time = time.time()
+        run_time_in_seconds = end_time - start_time
         return {
             "generated_num_tokens": generated_num_tokens,
             "generated_texts": generated_texts,
-            "model_name": model_shortname
+            "run_time_in_seconds": run_time_in_seconds,
+            "model_name": model_shortname,
         }
 
 print("\nLoading model and tokenizer.")
