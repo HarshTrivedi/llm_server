@@ -9,7 +9,10 @@ os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE # before importing transfo
 
 import torch
 from transformers.generation_stopping_criteria import StoppingCriteria, StoppingCriteriaList
-from transformers import AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import (
+    AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer,
+    T5ForConditionalGeneration
+)
 
 
 @lru_cache(maxsize=None)
@@ -76,7 +79,9 @@ def get_model_and_tokenizer():
 
     elif model_shortname == "ul2":
         model_name = "google/" + model_shortname
-        model = AutoModelForSeq2SeqLM.from_pretrained("google/ul2", device_map="auto")
+        model = T5ForConditionalGeneration.from_pretrained(
+            "google/ul2", low_cpu_mem_usage=True, torch_dtype=torch.bfloat16
+        )
         tokenizer = AutoTokenizer.from_pretrained("google/ul2")
 
     return model, tokenizer
