@@ -81,7 +81,7 @@ def get_model_and_tokenizer():
     elif model_shortname == "ul2":
         model_name = "google/" + model_shortname
         model = T5ForConditionalGeneration.from_pretrained(
-            "google/ul2", device_map="auto", torch_dtype=torch.bfloat16
+            "google/ul2", device_map="auto", low_cpu_mem_usage=True, torch_dtype=torch.bfloat16
         )
         tokenizer = AutoTokenizer.from_pretrained("google/ul2")
 
