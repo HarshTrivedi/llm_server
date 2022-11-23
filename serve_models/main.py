@@ -150,9 +150,6 @@ async def generate(
         is_encoder_decoder = model_shortname in ["T0pp"] or model_shortname.startswith("flan-t5")
 
         max_length_ = max_length if is_encoder_decoder else inputs.shape[1]+max_length
-        print("****************")
-        print(max_length_)
-        print("****************")
         generated_output = model.generate(
             inputs,
             max_length=max_length_,
