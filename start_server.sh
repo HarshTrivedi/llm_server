@@ -13,7 +13,8 @@ if [ "$1" = "gpt-j-6B" ]; then # 6B
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 2 \
-        --memory 100GiB
+        --memory 100GiB \
+        "${*:2:10}"
 
 elif [ "$1" = "T0pp" ]; then # 11B
 
@@ -23,7 +24,8 @@ elif [ "$1" = "T0pp" ]; then # 11B
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 2 \
-        --memory 100GiB
+        --memory 100GiB \
+        "${*:2:10}"
 
 elif [ "$1" = "gpt-neox-20b" ]; then # 20B
 
@@ -33,7 +35,8 @@ elif [ "$1" = "gpt-neox-20b" ]; then # 20B
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 2 \
-        --memory 100GiB
+        --memory 100GiB \
+        "${*:2:10}"
 
 elif [ "$1" = "opt-66b" ]; then # 66B
 
@@ -42,7 +45,8 @@ elif [ "$1" = "opt-66b" ]; then # 66B
         --image beaker://harsh-trivedi/llm-server \
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
-        --gpus 6
+        --gpus 6 \
+        "${*:2:10}"
 
 elif [ "$1" = "opt-125m" ]; then # <1B Mainly for quick testing.
 
@@ -51,7 +55,8 @@ elif [ "$1" = "opt-125m" ]; then # <1B Mainly for quick testing.
         --image beaker://harsh-trivedi/llm-server \
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
-        --gpus 1
+        --gpus 1 \
+        "${*:2:10}"
 
 elif [[ "$1" == *"flan"* ]]; then
     beaker secret write MODEL_NAME $1 --workspace ai2/GPT3_Exps
@@ -59,7 +64,8 @@ elif [[ "$1" == *"flan"* ]]; then
         --image beaker://harsh-trivedi/llm-server \
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
-        --gpus 1 # 1 is enough for xxl upto 2300 wordpieces.
+        --gpus 1 \ # 1 is enough for xxl upto 2300 wordpieces.
+        "${*:2:10}"
 
 elif [ "$1" = "ul2" ]; then # 20B
 
@@ -69,10 +75,11 @@ elif [ "$1" = "ul2" ]; then # 20B
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
         --gpus 2 \
-        --memory 100GiB
+        --memory 100GiB \
+        "${*:2:10}"
 
 else
-    echo "Usage: ./start_server.sh <model-name>. Model-name not passed or is invalid."
+    echo "Usage: ./start_server.sh <model-name> <optional-extra-flags>. Model-name not passed or is invalid."
     echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl, ul2."
 
 fi
