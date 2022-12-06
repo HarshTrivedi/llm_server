@@ -5,8 +5,9 @@ from functools import lru_cache
 
 from fastapi import FastAPI, status, Response
 
-from constants import TRANSFORMERS_CACHE
-os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE # before importing transformers
+if "TRANSFORMERS_CACHE" not in os.environ:
+    from constants import TRANSFORMERS_CACHE
+    os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE # before importing transformers
 
 import torch
 from transformers.generation_stopping_criteria import StoppingCriteria, StoppingCriteriaList
