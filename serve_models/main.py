@@ -146,9 +146,8 @@ async def generate(
             stopping_criteria = EOSReachedCriteria(tokenizer=tokenizer, eos_text=eos_text)
             stopping_criteria_list = StoppingCriteriaList([stopping_criteria])
 
-        # T0pp and flan are the only encoder-decoder model, and so don't have prompt part in its generation.
-        # ul2 shouldn't be added to this list and it generates input as well.
-        is_encoder_decoder = model_shortname in ["T0pp"] or model_shortname.startswith("flan-t5")
+        # T0pp, ul2 and flan are the only encoder-decoder model, and so don't have prompt part in its generation.
+        is_encoder_decoder = model_shortname in ["T0pp", "ul2"] or model_shortname.startswith("flan-t5")
 
         max_length_ = max_length if is_encoder_decoder else inputs.shape[1]+max_length
         generated_output = model.generate(
