@@ -81,8 +81,9 @@ def get_model_and_tokenizer():
 
     elif model_shortname == "ul2":
         model_name = "google/" + model_shortname
-        model = T5ForConditionalGeneration.from_pretrained( # Don't use auto here. It's slower cpu loading I guess.
-            "google/ul2", low_cpu_mem_usage=True, torch_dtype=torch.bfloat16
+        model = T5ForConditionalGeneration.from_pretrained(
+            # Don't use auto here. It's slower cpu loading I guess.
+            "google/ul2" #, low_cpu_mem_usage=True, torch_dtype=torch.bfloat16
         ).cuda()
         tokenizer = AutoTokenizer.from_pretrained("google/ul2")
 
