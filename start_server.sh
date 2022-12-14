@@ -64,8 +64,8 @@ elif [[ "$1" == *"flan"* ]]; then
         --image beaker://harsh-trivedi/llm-server-cirrascale \
         --workspace ai2/GPT3_Exps --port 8000 \
         --secret-env MODEL_NAME=MODEL_NAME \
-        --gpus 1 \ # 1 is enough for xxl upto 2300 wordpieces.
-        "${*:2:10}"
+        --gpus 1 \
+        --priority preemptible
 
 elif [ "$1" = "ul2" ]; then # 20B
 
