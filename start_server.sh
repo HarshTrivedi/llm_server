@@ -82,6 +82,7 @@ else
     echo "Usage: ./start_server.sh <model-name> <optional-extra-flags>. Model-name not passed or is invalid."
     echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, "
     echo "flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl, "
-    echo "flan-t5-base-bf16, flan-t5-large-bf16, flan-t5-xl-bf16, flan-t5-xxl-bf16, ul2."
+    echo "flan-t5-base-bf16, flan-t5-large-bf16, flan-t5-xl-bf16, flan-t5-xxl-bf16, "
+    echo "flan-t5-base-8bit, flan-t5-large-8bit, flan-t5-xl-8bit, flan-t5-xxl-8bit, ul2."
 
 fi

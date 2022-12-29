@@ -26,7 +26,8 @@ def get_model_and_tokenizer():
     valid_model_shortnames = [
         "gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m",
         "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl",
-        "flan-t5-base-bf16", "flan-t5-large-bf16", "flan-t5-xl-bf16", "flan-t5-xxl-bf16", "ul2"
+        "flan-t5-base-bf16", "flan-t5-large-bf16", "flan-t5-xl-bf16", "flan-t5-xxl-bf16",
+        "flan-t5-base-8bit", "flan-t5-large-8bit", "flan-t5-xl-8bit", "flan-t5-xxl-8bit", "ul2"
     ]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
@@ -73,7 +74,7 @@ def get_model_and_tokenizer():
         # the fast tokenizer currently does not work correctly
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
-    elif model_shortname.startswith("flan-t5"):
+    elif model_shortname.startswith("flan-t5") and "bf16" not in model_shortname and "8bit" not in model_shortname:
         model_name = "google/" + model_shortname
         # don't use fp16 or 8bit precision here. It works terribly worse.
         model = AutoModelForSeq2SeqLM.from_pretrained(
@@ -88,6 +89,16 @@ def get_model_and_tokenizer():
         model_name = "google/" + model_shortname.replace("-bf16", "")
         model = T5ForConditionalGeneration.from_pretrained(
             model_name, device_map="auto", torch_dtype=torch.bfloat16
+        )
+        tokenizer = T5Tokenizer.from_pretrained(model_name)
+
+    elif model_shortname.startswith("flan-t5") and model_shortname.endswith("-8bit"):
+
+        assert torch.cuda.is_bf16_supported()
+        assert is_torch_bf16_gpu_available()
+        model_name = "google/" + model_shortname.replace("-8bit", "")
+        model = T5ForConditionalGeneration.from_pretrained(
+            model_name, device_map="auto", load_in_8bit=True
         )
         tokenizer = T5Tokenizer.from_pretrained(model_name)
 
