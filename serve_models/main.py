@@ -10,7 +10,7 @@ if "TRANSFORMERS_CACHE" not in os.environ:
     os.environ['TRANSFORMERS_CACHE'] = TRANSFORMERS_CACHE # before importing transformers
 
 import torch
-from transformers.generation_stopping_criteria import StoppingCriteria, StoppingCriteriaList
+from transformers.generation.stopping_criteria import StoppingCriteria, StoppingCriteriaList
 from transformers.utils.import_utils import is_torch_bf16_gpu_available
 from transformers import (
     AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer,
@@ -172,11 +172,11 @@ async def generate(
 
         # T0pp, ul2 and flan are the only encoder-decoder model, and so don't have prompt part in its generation.
         is_encoder_decoder = model_shortname in ["T0pp", "ul2"] or model_shortname.startswith("flan-t5")
-
-        max_length_ = max_length if is_encoder_decoder else inputs.shape[1]+max_length
+        # max_length_ = max_length if is_encoder_decoder else inputs.shape[1]+max_length
         generated_output = model.generate(
             inputs,
-            max_length=max_length_,
+            # max_length=max_length_,
+            max_new_tokens=max_length,
             min_length=min_length,
             do_sample=do_sample,
             temperature=temperature,
