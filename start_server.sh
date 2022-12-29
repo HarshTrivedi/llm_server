@@ -80,6 +80,8 @@ elif [ "$1" = "ul2" ]; then # 20B
 
 else
     echo "Usage: ./start_server.sh <model-name> <optional-extra-flags>. Model-name not passed or is invalid."
-    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl, ul2."
+    echo "Available choices: gpt-j-6B, T0pp, gpt-neox-20b, opt-66b, opt-125m, "
+    echo "flan-t5-base, flan-t5-large, flan-t5-xl, flan-t5-xxl, "
+    echo "flan-t5-base-bf16, flan-t5-large-bf16, flan-t5-xl-bf16, flan-t5-xxl-bf16, ul2."
 
 fi
