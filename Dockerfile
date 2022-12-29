@@ -9,8 +9,9 @@ RUN apt-get update \
 
 # Install transformers
 RUN conda install pytorch=1.12.0 cudatoolkit=11.3 -c pytorch # needed for cuda11.3
-RUN pip install transformers==4.24.0
-RUN pip install accelerate==0.14.0
+# This is 4.26.0.dev0 (needed the latest version for flan related fix)
+RUN pip install git+https://github.com/huggingface/transformers.git@8637316e5e94ba0a2493e5df7846f2f23f46eaef
+RUN pip install accelerate==0.15.0
 RUN pip install -i https://test.pypi.org/simple/ bitsandbytes-cuda115
 RUN pip install sentencepiece
 RUN pip install protobuf==3.20.1 # needed to avoid error.

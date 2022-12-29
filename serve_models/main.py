@@ -11,9 +11,10 @@ if "TRANSFORMERS_CACHE" not in os.environ:
 
 import torch
 from transformers.generation_stopping_criteria import StoppingCriteria, StoppingCriteriaList
+from transformers.utils.import_utils import is_torch_bf16_gpu_available
 from transformers import (
     AutoModelForCausalLM, AutoModelForSeq2SeqLM, AutoTokenizer,
-    T5ForConditionalGeneration
+    T5Tokenizer, T5ForConditionalGeneration
 )
 
 
@@ -24,7 +25,8 @@ def get_model_and_tokenizer():
 
     valid_model_shortnames = [
         "gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m",
-        "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl", "ul2"
+        "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl",
+        "flan-t5-base-bf16", "flan-t5-large-bf16", "flan-t5-xl-bf16", "flan-t5-xxl-bf16", "ul2"
     ]
     assert model_shortname in valid_model_shortnames, \
         f"Model name {model_shortname} not in {valid_model_shortnames}"
@@ -78,6 +80,16 @@ def get_model_and_tokenizer():
             model_name, revision="main", device_map="auto"
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+    elif model_shortname.startswith("flan-t5") and model_shortname.endswith("-bf16"):
+
+        assert torch.cuda.is_bf16_supported()
+        assert is_torch_bf16_gpu_available()
+        model_name = "google/" + model_shortname.replace("-bf16", "")
+        model = T5ForConditionalGeneration.from_pretrained(
+            model_name, device_map="auto", torch_dtype=torch.bfloat16
+        )
+        tokenizer = T5Tokenizer.from_pretrained(model_name)
 
     elif model_shortname == "ul2":
         model_name = "google/" + model_shortname
