@@ -18,7 +18,7 @@ def main():
     parser.add_argument('--preemptible', action="store_true", help="preemptible session.")
     args = parser.parse_args()
 
-    command = f"beaker secret write MODEL_NAME {args.model_name} --workspace ai2/GPT3_Exps"
+    command = f"beaker secret write MODEL_NAME {args.model_shortname} --workspace ai2/GPT3_Exps"
     print(f"Running: {command}")
     subprocess.run(command, shell=True)
 
