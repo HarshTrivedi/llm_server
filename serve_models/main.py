@@ -1,9 +1,8 @@
 import os
 import time
-from typing import Union, List
 from functools import lru_cache
 
-from fastapi import FastAPI, status, Response
+from fastapi import FastAPI
 
 if "TRANSFORMERS_CACHE" not in os.environ:
     from constants import TRANSFORMERS_CACHE
