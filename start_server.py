@@ -24,9 +24,17 @@ def main():
     print(f"Running: {command}")
     subprocess.run(command, shell=True)
 
+    if args.cluster_type == "cirrascale":
+        transformers_cache = "/net/nfs.cirrascale/aristo/llm_server/.hf_cache"
+    else:
+        transformers_cache = "/net/nfs/aristo/llm_server/"
+    command = f"beaker secret write TRANSFORMERS_CACHE {transformers_cache} --workspace ai2/GPT3_Exps"
+    print(f"Running: {command}")
+    subprocess.run(command, shell=True)
+
     command = f'''
 beaker session create \
-    --image beaker://harsh-trivedi/llm-server-cirrascale \
+    --image beaker://harsh-trivedi/llm-server \
     --workspace ai2/GPT3_Exps --port 8000 \
     --secret-env MODEL_NAME=MODEL_NAME \
     --gpus {args.num_gpus} \
