@@ -109,7 +109,7 @@ def get_model_and_tokenizer():
         else:
             hf_device_map = "auto"
         model = T5ForConditionalGeneration.from_pretrained(
-            model_name, device_map="auto", load_in_8bit=True
+            model_name, device_map=hf_device_map, load_in_8bit=True
         )
         tokenizer = T5Tokenizer.from_pretrained(model_name)
 

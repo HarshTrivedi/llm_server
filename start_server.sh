@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "NOTE: There is a more configurable start_server.py. Consider using it instead"
+
 # Update the beaker-username and maybe llm-server-cirrascale version number as necessary, and run:
 # This is what I have tested models with:
 # For opt-66b 4 GPUS and for all others 2 GPUs and 100Gs.
