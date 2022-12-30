@@ -30,7 +30,7 @@ def main():
 
     command = f"beaker image create {image_name} --name {image_name} --workspace ai2/GPT3_Exps"
     print(f"Running: {command}")
-    subprocess.run(command, shell=True, stdout=open(os.devnull, 'wb'))
+    subprocess.run(command, shell=True)
 
 
 if __name__ == "__main__":
