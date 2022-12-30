@@ -15,7 +15,9 @@ RUN pip install accelerate==0.15.0
 RUN pip install -i https://test.pypi.org/simple/ bitsandbytes-cuda115
 RUN pip install sentencepiece
 RUN pip install protobuf==3.20.1 # needed to avoid error.
-RUN DS_BUILD_OPS=1 pip install git+https://github.com/microsoft/DeepSpeed.git@d9b788d773ce97281ee63064cc99993cb82397e2
+
+# Skipping deepspeed for now as it's not getting install correctly.
+# RUN DS_BUILD_OPS=1 pip install git+https://github.com/microsoft/DeepSpeed.git@d9b788d773ce97281ee63064cc99993cb82397e2
 
 RUN pip install fastapi
 RUN pip install "uvicorn[standard]"
