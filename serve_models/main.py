@@ -76,9 +76,12 @@ def get_model_and_tokenizer():
 
     elif model_shortname.startswith("flan-t5") and "bf16" not in model_shortname and "8bit" not in model_shortname:
         model_name = "google/" + model_shortname
-        # don't use fp16 or 8bit precision here. It works terribly worse.
+        if torch.cuda.device_count() == 2:
+            hf_device_map = {"shared": 1, "encoder": 0, "decoder": 1, "lm_head": 1}
+        else:
+            hf_device_map = "auto"
         model = AutoModelForSeq2SeqLM.from_pretrained(
-            model_name, revision="main", device_map="auto"
+            model_name, revision="main", device_map=hf_device_map
         )
         tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -87,8 +90,12 @@ def get_model_and_tokenizer():
         assert torch.cuda.is_bf16_supported()
         assert is_torch_bf16_gpu_available()
         model_name = "google/" + model_shortname.replace("-bf16", "")
+        if torch.cuda.device_count() == 2:
+            hf_device_map = {"shared": 1, "encoder": 0, "decoder": 1, "lm_head": 1}
+        else:
+            hf_device_map = "auto"
         model = T5ForConditionalGeneration.from_pretrained(
-            model_name, device_map="auto", torch_dtype=torch.bfloat16
+            model_name, device_map=hf_device_map, torch_dtype=torch.bfloat16
         )
         tokenizer = T5Tokenizer.from_pretrained(model_name)
 
@@ -97,6 +104,10 @@ def get_model_and_tokenizer():
         assert torch.cuda.is_bf16_supported()
         assert is_torch_bf16_gpu_available()
         model_name = "google/" + model_shortname.replace("-8bit", "")
+        if torch.cuda.device_count() == 2:
+            hf_device_map = {"shared": 1, "encoder": 0, "decoder": 1, "lm_head": 1}
+        else:
+            hf_device_map = "auto"
         model = T5ForConditionalGeneration.from_pretrained(
             model_name, device_map="auto", load_in_8bit=True
         )
