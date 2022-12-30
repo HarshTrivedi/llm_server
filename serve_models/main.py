@@ -26,6 +26,7 @@ def get_model_and_tokenizer():
         "gpt-j-6B", "opt-66b", "gpt-neox-20b", "T0pp", "opt-125m",
         "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl",
         "flan-t5-base-bf16", "flan-t5-large-bf16", "flan-t5-xl-bf16", "flan-t5-xxl-bf16",
+        "flan-t5-base-dsbf16", "flan-t5-large-dsbf16", "flan-t5-xl-dsbf16", "flan-t5-xxl-dsbf16",
         "flan-t5-base-8bit", "flan-t5-large-8bit", "flan-t5-xl-8bit", "flan-t5-xxl-8bit", "ul2"
     ]
     assert model_shortname in valid_model_shortnames, \
@@ -110,6 +111,38 @@ def get_model_and_tokenizer():
         model = T5ForConditionalGeneration.from_pretrained(
             model_name, device_map=hf_device_map, load_in_8bit=True
         )
+        tokenizer = T5Tokenizer.from_pretrained(model_name)
+
+
+    elif model_shortname.startswith("flan-t5") and model_shortname.endswith("-dsbf16"):
+
+        import deepspeed
+        from transformers.deepspeed import HfDeepSpeedConfig
+        deepspeed.init_distributed()
+        from transformers import AutoConfig
+        model_name = "google/" + model_shortname.replace("-dsbf16", "")
+        config = AutoConfig.from_pretrained(model_name)
+        model_hidden_size = config.d_model
+        ds_config = {
+            "fp16": {"enabled": False},
+            "bf16": {"enabled": True},
+            "zero_optimization": {
+                "stage": 3,
+                "overlap_comm": True,
+                "contiguous_gradients": True,
+                "reduce_bucket_size": model_hidden_size * model_hidden_size,
+                "stage3_prefetch_bucket_size": 0.9 * model_hidden_size * model_hidden_size,
+                "stage3_param_persistence_threshold": 10 * model_hidden_size
+            },
+            "train_batch_size": 1,
+        }
+
+        dschf = HfDeepSpeedConfig(ds_config)
+        model = AutoModelForSeq2SeqLM.from_pretrained(model_name).cuda()
+        ds_engine = deepspeed.initialize(model=model, config_params=ds_config)[0]
+        ds_engine.module.eval()
+        model = ds_engine.module
+
         tokenizer = T5Tokenizer.from_pretrained(model_name)
 
     elif model_shortname == "ul2":

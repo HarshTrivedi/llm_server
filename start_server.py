@@ -10,6 +10,7 @@ def main():
     valid_model_shortnames = [
         "flan-t5-base", "flan-t5-large", "flan-t5-xl", "flan-t5-xxl",
         "flan-t5-base-bf16", "flan-t5-large-bf16", "flan-t5-xl-bf16", "flan-t5-xxl-bf16",
+        "flan-t5-base-dsbf16", "flan-t5-large-dsbf16", "flan-t5-xl-dsbf16", "flan-t5-xxl-dsbf16",
         "flan-t5-base-8bit", "flan-t5-large-8bit", "flan-t5-xl-8bit", "flan-t5-xxl-8bit", "ul2",
     ]
     parser = argparse.ArgumentParser(description="Start LLM server on Beaker interactive session.")
@@ -20,7 +21,7 @@ def main():
     parser.add_argument('--preemptible', action="store_true", help="preemptible session.")
     args = parser.parse_args()
 
-    command = f"beaker secret write MODEL_NAME {model_name} --workspace ai2/GPT3_Exps"
+    command = f"beaker secret write MODEL_NAME {args.model_name} --workspace ai2/GPT3_Exps"
     print(f"Running: {command}")
     subprocess.run(command, shell=True)
 
