@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
 # A more configurable python counterpart of start_server.py
 import argparse
 import subprocess
+import os
 
 
 def main():
@@ -12,7 +14,6 @@ def main():
     ]
     parser = argparse.ArgumentParser(description="Start LLM server on Beaker interactive session.")
     parser.add_argument("model_shortname", type=str, help="short model name", choices=valid_model_shortnames)
-    parser.add_argument("cluster_type", type=str, help="cluster type", choices=("cirrascale", "elanding"))
     parser.add_argument("--num_gpus", type=int, help="number of gpus.", default=1)
     parser.add_argument("--memory", type=str, help="CPU memory required.", default="100GiB")
     parser.add_argument('--preemptible', action="store_true", help="preemptible session.")
@@ -22,10 +23,16 @@ def main():
     print(f"Running: {command}")
     subprocess.run(command, shell=True)
 
-    if args.cluster_type == "cirrascale":
-        transformers_cache = "/net/nfs.cirrascale/aristo/llm_server/.hf_cache"
+    cirrascale_transformers_cache = "/net/nfs.cirrascale/aristo/llm_server/.hf_cache"
+    elanding_transformers_cache = "/net/nfs/aristo/llm_server/"
+    if os.path.exists(cirrascale_transformers_cache):
+        transformers_cache = cirrascale_transformers_cache
+    elif os.path.exists(cirrascale_transformers_cache):
+        transformers_cache = elanding_transformers_cache
     else:
-        transformers_cache = "/net/nfs/aristo/llm_server/"
+        transformers_cache = os.expanduser("~/.cache/huggingface/transformers/")
+        print("No transformers_cache found, using the default one.")
+
     command = f"beaker secret write TRANSFORMERS_CACHE {transformers_cache} --workspace ai2/GPT3_Exps"
     print(f"Running: {command}")
     subprocess.run(command, shell=True)
