@@ -15,7 +15,7 @@ def main():
     parser = argparse.ArgumentParser(description="Start LLM server on Beaker interactive session.")
     parser.add_argument("model_shortname", type=str, help="short model name", choices=valid_model_shortnames)
     parser.add_argument("--num_gpus", type=int, help="number of gpus.", default=1)
-    parser.add_argument("--memory", type=str, help="CPU memory required.", default="100GiB")
+    parser.add_argument("--memory", type=str, help="CPU memory required.", default="20GiB")
     parser.add_argument('--preemptible', action="store_true", help="preemptible session.")
     args = parser.parse_args()
 
