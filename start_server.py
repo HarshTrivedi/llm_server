@@ -27,10 +27,10 @@ def main():
     elanding_transformers_cache = "/net/nfs/aristo/llm_server/"
     if os.path.exists(cirrascale_transformers_cache):
         transformers_cache = cirrascale_transformers_cache
-    elif os.path.exists(cirrascale_transformers_cache):
+    elif os.path.exists(elanding_transformers_cache):
         transformers_cache = elanding_transformers_cache
     else:
-        transformers_cache = os.expanduser("~/.cache/huggingface/transformers/")
+        transformers_cache = os.path.expanduser("~/.cache/huggingface/transformers/")
         print("No transformers_cache found, using the default one.")
 
     command = f"beaker secret write TRANSFORMERS_CACHE {transformers_cache} --workspace ai2/GPT3_Exps"
